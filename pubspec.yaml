@@ -23,6 +23,6 @@ flutter:
     platforms:
       android:
         package: com.anton-roos.appcenter_sdk
-        pluginClass: FlutterAppcenterBundlePlugin
+        pluginClass: AppcenterSdkPlugin
       ios:
-        pluginClass: FlutterAppcenterBundlePlugin
+        pluginClass: AppcenterSdkPlugin

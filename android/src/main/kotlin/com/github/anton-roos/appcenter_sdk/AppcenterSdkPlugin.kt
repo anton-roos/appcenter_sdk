@@ -15,11 +15,11 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
-/** FlutterAppcenterBundlePlugin */
-class FlutterAppcenterBundlePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+/** AppcenterSdkPlugin */
+class AppcenterSdkBundlePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         val channel = MethodChannel(flutterPluginBinding.binaryMessenger, methodChannelName)
-        channel.setMethodCallHandler(FlutterAppcenterBundlePlugin())
+        channel.setMethodCallHandler(AppcenterSdkBundlePlugin())
     }
 
     // This static function is optional and equivalent to onAttachedToEngine. It supports the old
@@ -40,7 +40,7 @@ class FlutterAppcenterBundlePlugin : FlutterPlugin, MethodCallHandler, ActivityA
         fun registerWith(registrar: Registrar) {
             application = registrar.activity().application
             val channel = MethodChannel(registrar.messenger(), methodChannelName)
-            channel.setMethodCallHandler(FlutterAppcenterBundlePlugin())
+            channel.setMethodCallHandler(AppcenterSdkPlugin())
         }
     }
 
@@ -58,9 +58,6 @@ class FlutterAppcenterBundlePlugin : FlutterPlugin, MethodCallHandler, ActivityA
 
                     val appSecret = call.argument<String>("secret")
                     val usePrivateTrack = call.argument<Boolean>("usePrivateTrack")
-                    if (usePrivateTrack == true){
-                        Distribute.setUpdateTrack(UpdateTrack.PRIVATE);
-                    }
 
                     if (appSecret == null || appSecret.isEmpty()) {
                         val error = "App secret is not set"
@@ -69,34 +66,16 @@ class FlutterAppcenterBundlePlugin : FlutterPlugin, MethodCallHandler, ActivityA
                         return
                     }
 
-                    AppCenter.start(application, appSecret, Analytics::class.java, Crashes::class.java, Distribute::class.java)
+                    AppCenter.start(application, appSecret, Analytics::class.java, Crashes::class.java)
                 }
                 "trackEvent" -> {
                     val name = call.argument<String>("name")
                     val properties = call.argument<Map<String, String>>("properties")
                     Analytics.trackEvent(name, properties)
                 }
-                "isDistributeEnabled" -> {
-                    result.success(Distribute.isEnabled().get())
-                    return
-                }
                 "getInstallId" -> {
                     result.success(AppCenter.getInstallId().get()?.toString())
                     return
-                }
-                "configureDistribute" -> {
-                    val value = call.arguments as Boolean
-                    Distribute.setEnabled(value).get()
-                }
-                "configureDistributeDebug" -> {
-                    val value = call.arguments as Boolean
-                    Distribute.setEnabledForDebuggableBuild(value)
-                }
-                "disableAutomaticCheckForUpdate" -> {
-                    Distribute.disableAutomaticCheckForUpdate()
-                }
-                "checkForUpdate" -> {
-                    Distribute.checkForUpdate()
                 }
                 "isCrashesEnabled" -> {
                     result.success(Crashes.isEnabled().get())

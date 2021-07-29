@@ -1,4 +1,4 @@
-#import "FlutterAppcenterBundlePlugin.h"
+#import "AppcenterSdkPlugin.h"
 #if __has_include(<appcenter_sdk/appcenter_sdk-Swift.h>)
 #import <appcenter_sdk/appcenter_sdk-Swift.h>
 #else
@@ -8,8 +8,8 @@
 #import "appcenter_sdk-Swift.h"
 #endif
 
-@implementation FlutterAppcenterBundlePlugin
+@implementation AppcenterSdkPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftFlutterAppcenterBundlePlugin registerWithRegistrar:registrar];
+  [SwiftAppcenterSdkPlugin registerWithRegistrar:registrar];
 }
 @end
