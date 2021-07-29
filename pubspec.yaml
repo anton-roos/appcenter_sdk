@@ -1,6 +1,6 @@
 name: appcenter_sdk
 description: This plugin bundles appcenter analytics and crashes.
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/anton-roos/appcenter_sdk
 publish_to: https://pub.dev/
 
