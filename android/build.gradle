@@ -1,4 +1,4 @@
-group 'com.github.hanabi1224.appcenter_sdk'
+group 'com.github.anton-roos.appcenter_sdk'
 version '1.0-SNAPSHOT'
 
 buildscript {
