@@ -1,46 +1,21 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-final _methodChannelName = 'com.github.anton-roos.appcenter_sdk';
-final _methodChannel = MethodChannel(_methodChannelName);
+final _methodChannel = MethodChannel('appcenter_sdk');
 
-/// Static class that provides AppCenter APIs
 class AppCenter {
-  /// Start appcenter functionalities
   static Future startAsync({
-    required String appSecretAndroid,
-    required String appSecretIOS,
-    enableAnalytics = true,
-    enableCrashes = true,
-    disableAutomaticCheckForUpdate = false,
+    required String appSecret,
   }) async {
-    String appsecret;
-    if (Platform.isAndroid) {
-      appsecret = appSecretAndroid;
-    } else if (Platform.isIOS) {
-      appsecret = appSecretIOS;
-    } else {
-      throw UnsupportedError('Current platform is not supported.');
-    }
-
-    if (appsecret.isEmpty) {
-      return;
-    }
-
     WidgetsFlutterBinding.ensureInitialized();
 
-    await configureAnalyticsAsync(enabled: enableAnalytics);
-    await configureCrashesAsync(enabled: enableCrashes);
-
     await _methodChannel.invokeMethod('start', <String, dynamic>{
-      'secret': appsecret.trim(),
+      'secret': appSecret.trim(),
     });
   }
 
-  /// Track events
   static Future trackEventAsync(String name,
       [Map<String, String>? properties]) async {
     await _methodChannel.invokeMethod('trackEvent', <String, dynamic>{
